@@ -1104,7 +1104,9 @@ body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-
     el.textContent = msg; el.classList.add('show');
     clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 1700);
   }
-  function nowStr() { const d = simNow(), h = d.getHours(); return (h < 12 ? '오전 ' : '오후 ') + (h % 12 || 12) + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  function nowStr(ago) { const d = simNow(); if (ago) d.setMinutes(d.getMinutes() - ago); const h = d.getHours(); return (h < 12 ? '오전 ' : '오후 ') + (h % 12 || 12) + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  // 폰을 켜기 몇 분 전 시각 (실험 5조 '오늘' 대화처럼 방금 온 메시지에 씁니다)
+  function agoTm(min) { return nowStr(min); }
   const inApp = cls => screen.dataset.view === 'app' && view.classList.contains(cls);
 
   // ---------- 카카오톡 ----------
@@ -1196,13 +1198,13 @@ body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-
         { me: 1, t: '고마워~', tm: '오후 5:32' },
         { who: '사쿠야', t: '형 감사해요', tm: '오후 5:33' },
         { day: 'today' },
-        { who: '사쿠야', t: '형 누나 저 물어볼 거 있어요', tm: '오후 7:40' },
-        { who: '사쿠야', t: '저 시뮬레이션 결과가 이상한데', tm: '오후 7:40' },
-        { who: '사쿠야', t: '저 좀 도와줄 사람', tm: '오후 7:41' },
-        { who: '오시온', t: '? 뭔데 보내봐', tm: '오후 7:43' },
-        { who: '사쿠야', t: '노트북 캡처가 안돼요', tm: '오후 7:44' },
-        { who: '오시온', t: '그게 무슨 소리지', tm: '오후 7:44' },
-        { who: '사쿠야', t: '시온이형 저 08관이에요 저 조 ㅁ도와줘요', tm: '오후 7:46' }] },
+        { who: '사쿠야', t: '형 누나 저 물어볼 거 있어요', tm: agoTm(8) },
+        { who: '사쿠야', t: '저 시뮬레이션 결과가 이상한데', tm: agoTm(8) },
+        { who: '사쿠야', t: '저 좀 도와줄 사람', tm: agoTm(7) },
+        { who: '오시온', t: '? 뭔데 보내봐', tm: agoTm(5) },
+        { who: '사쿠야', t: '노트북 캡처가 안돼요', tm: agoTm(4) },
+        { who: '오시온', t: '그게 무슨 소리지', tm: agoTm(4) },
+        { who: '사쿠야', t: '시온이형 저 08관이에요 저 조 ㅁ도와줘요', tm: agoTm(2) }] },
       { id: 'family', n: '우리 가족', c: '#7cc59a', group: 4, unread: 5, members: ['엄마', '아빠', '동생'], msgs: [
         { who: '엄마', t: '김장 다음 주 토요일에 하자', tm: '오전 10:12' }, { who: '아빠', t: '좋아', tm: '오전 10:30' },
         { who: '동생', t: '나 그날 오후에 갈게', tm: '오전 11:02' }, { who: '엄마', t: '사진을 보냈습니다.', tm: '오후 12:40' },
